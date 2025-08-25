@@ -9,10 +9,12 @@ import (
 // CGO
 
 /*
+#cgo CFLAGS: -I${SRCDIR}/../../include -I${SRCDIR}/../../ggml/include
 #cgo LDFLAGS: -lwhisper -lggml -lggml-base -lggml-cpu -lm -lstdc++
-#cgo linux LDFLAGS: -fopenmp
-#cgo darwin LDFLAGS: -lggml-metal -lggml-blas
+#cgo linux LDFLAGS: -L${SRCDIR}/../../build_go/src -L${SRCDIR}/../../build_go/ggml/src -fopenmp
+#cgo darwin LDFLAGS: -L${SRCDIR}/../../build_go/src -L${SRCDIR}/../../build_go/ggml/src -lggml-metal -lggml-blas
 #cgo darwin LDFLAGS: -framework Accelerate -framework Metal -framework Foundation -framework CoreGraphics
+#cgo windows LDFLAGS: -L${SRCDIR}/../../build_go/src -L${SRCDIR}/../../build_go/ggml/src
 #include <whisper.h>
 #include <stdlib.h>
 
