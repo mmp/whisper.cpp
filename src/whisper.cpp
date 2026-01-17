@@ -7906,6 +7906,23 @@ int whisper_full_parallel(
     return ret;
 }
 
+int whisper_full_with_params_ptr(
+        struct whisper_context * ctx,
+        const struct whisper_full_params * params,
+        const float * samples,
+        int n_samples) {
+    return whisper_full(ctx, *params, samples, n_samples);
+}
+
+int whisper_full_parallel_with_params_ptr(
+        struct whisper_context * ctx,
+        const struct whisper_full_params * params,
+        const float * samples,
+        int n_samples,
+        int n_processors) {
+    return whisper_full_parallel(ctx, *params, samples, n_samples, n_processors);
+}
+
 int whisper_full_n_segments_from_state(struct whisper_state * state) {
     return state->result_all.size();
 }
