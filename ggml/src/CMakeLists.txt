@@ -139,13 +139,17 @@ endif()
 # Somehow in OpenBSD whenever POSIX conformance is specified
 # some string functions rely on locale_t availability,
 # which was introduced in POSIX.1-2008, forcing us to go higher
-if (CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
-    add_compile_definitions(_XOPEN_SOURCE=700)
-elseif (CMAKE_SYSTEM_NAME MATCHES "AIX")
-    # Don't define _XOPEN_SOURCE.  We need _ALL_SOURCE, which is the default,
-    # in order to define _SC_PHYS_PAGES.
-else()
-    add_compile_definitions(_XOPEN_SOURCE=600)
+# On Windows, we don't define _XOPEN_SOURCE to avoid pulling in POSIX
+# functions like nanosleep that may not be available in the runtime DLLs.
+if (NOT WIN32)
+    if (CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
+        add_compile_definitions(_XOPEN_SOURCE=700)
+    elseif (CMAKE_SYSTEM_NAME MATCHES "AIX")
+        # Don't define _XOPEN_SOURCE.  We need _ALL_SOURCE, which is the default,
+        # in order to define _SC_PHYS_PAGES.
+    else()
+        add_compile_definitions(_XOPEN_SOURCE=600)
+    endif()
 endif()
 
 # Data types, macros and functions related to controlling CPU affinity and
