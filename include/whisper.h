@@ -606,6 +606,13 @@ extern "C" {
                            const float * samples,
                                    int   n_samples);
 
+    // Pointer-based variant to avoid large struct pass-by-value ABI issues
+    WHISPER_API int whisper_full_with_params_ptr(
+                struct whisper_context * ctx,
+      const struct whisper_full_params * params,
+                           const float * samples,
+                                   int   n_samples);
+
     WHISPER_API int whisper_full_with_state(
                 struct whisper_context * ctx,
                   struct whisper_state * state,
@@ -621,6 +628,14 @@ extern "C" {
     WHISPER_API int whisper_full_parallel(
                 struct whisper_context * ctx,
             struct whisper_full_params   params,
+                           const float * samples,
+                                   int   n_samples,
+                                   int   n_processors);
+
+    // Pointer-based variant to avoid large struct pass-by-value ABI issues
+    WHISPER_API int whisper_full_parallel_with_params_ptr(
+                struct whisper_context * ctx,
+      const struct whisper_full_params * params,
                            const float * samples,
                                    int   n_samples,
                                    int   n_processors);
