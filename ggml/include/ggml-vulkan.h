@@ -18,6 +18,10 @@ GGML_BACKEND_API int  ggml_backend_vk_get_device_count(void);
 GGML_BACKEND_API void ggml_backend_vk_get_device_description(int device, char * description, size_t description_size);
 GGML_BACKEND_API void ggml_backend_vk_get_device_memory(int device, size_t * free, size_t * total);
 
+// Returns the Vulkan physical device type for a device:
+// 0 = other, 1 = integrated GPU, 2 = discrete GPU, 3 = virtual GPU, 4 = CPU
+GGML_BACKEND_API int  ggml_backend_vk_get_device_type(int device);
+
 GGML_BACKEND_API ggml_backend_buffer_type_t ggml_backend_vk_buffer_type(size_t dev_num);
 // pinned host buffer for use with the CPU backend for faster copies between CPU and GPU
 GGML_BACKEND_API ggml_backend_buffer_type_t ggml_backend_vk_host_buffer_type(void);
