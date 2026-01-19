@@ -14296,7 +14296,7 @@ void ggml_backend_vk_get_device_memory(int device, size_t * free, size_t * total
     }
 }
 
-static vk::PhysicalDeviceType ggml_backend_vk_get_device_type(int device_idx) {
+int ggml_backend_vk_get_device_type(int device_idx) {
     GGML_ASSERT(device_idx >= 0 && device_idx < (int) vk_instance.device_indices.size());
 
     vk::PhysicalDevice device = vk_instance.instance.enumeratePhysicalDevices()[vk_instance.device_indices[device_idx]];
@@ -14304,7 +14304,8 @@ static vk::PhysicalDeviceType ggml_backend_vk_get_device_type(int device_idx) {
     vk::PhysicalDeviceProperties2 props = {};
     device.getProperties2(&props);
 
-    return props.properties.deviceType;
+    // Returns: 0=other, 1=integrated, 2=discrete, 3=virtual, 4=CPU
+    return static_cast<int>(props.properties.deviceType);
 }
 
 static std::string ggml_backend_vk_get_device_pci_id(int device_idx) {
@@ -15064,7 +15065,7 @@ static ggml_backend_dev_t ggml_backend_vk_reg_get_device(ggml_backend_reg_t reg,
                 ctx->device = i;
                 ctx->name = GGML_VK_NAME + std::to_string(i);
                 ctx->description = desc;
-                ctx->is_integrated_gpu = ggml_backend_vk_get_device_type(i) == vk::PhysicalDeviceType::eIntegratedGpu;
+                ctx->is_integrated_gpu = ggml_backend_vk_get_device_type(i) == 1; // 1 = integrated GPU
                 ctx->pci_bus_id = ggml_backend_vk_get_device_pci_id(i);
                 ctx->op_offload_min_batch_size = min_batch_size;
                 devices.push_back(new ggml_backend_device {
